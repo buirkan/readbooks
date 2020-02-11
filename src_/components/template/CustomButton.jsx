@@ -5,7 +5,7 @@ export default props => {
     return (
         <ShowCondition condition={props.show}>
             <button id={props.idButton} className={'btn btn-' + props.category} onClick={props.callback}>
-                <i id={props.favState} className={'fa fa-' + props.icon}></i>
+                <i id='cuustomIcon' className={'fa fa-' + props.icon}></i>
                 <ShowCondition condition={props.showText}>
                     <span id='customText'>{props.text}</span>
                 </ShowCondition>

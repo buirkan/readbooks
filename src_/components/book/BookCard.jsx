@@ -1,7 +1,6 @@
 import React, { Fragment, Suspense } from 'react'
 import { ShowCondition } from '../Utils'
 import Spinner from '../template/loader/Spinner'
-import { dateFormatter } from '../Utils'
 
 const BookThumbnail = React.lazy(() => import('./BookThumbnail'))
 
@@ -27,7 +26,7 @@ export default (props) => {
     )
 
     const BookAuthors = () => (
-        <div className='info-area'>
+        <div>
             <sub className='subtitle'>Autores</sub>
             <hr id='divisor' className='card-divisor my-4' />
             {book.authors.map(author => (
@@ -37,7 +36,7 @@ export default (props) => {
     )
 
     const Publisher = () => (
-        <div className='info-area'>
+        <div>
             <sub className='subtitle'>Editora</sub>
             <hr id='divisor' className='card-divisor my-4' />
             <p className='description'>{book.publisher}</p>
@@ -45,23 +44,23 @@ export default (props) => {
     )
 
     const BookRelease = () => (
-        <div className='info-area'>
+        <div>
             <sub className='subtitle'>Lançamento</sub>
             <hr id='divisor' className='card-divisor my-4' />
-            <p className='description'>{dateFormatter(book.releaseDate)}</p>
+            <p className='description'>{book.releaseDate}</p>
         </div>
     )
 
     const PageCount = () => (
-        <div className='info-area'>
-            <sub className='subtitle'>Páginas</sub>
+        <div>
+            <sub className='subtitle'>Quantidade de Páginas</sub>
             <hr id='divisor' className='card-divisor my-4' />
             <p className='description'>{book.pageCount}</p>
         </div>
     )
 
     const BookCategories = () => (
-        <div className='info-area'>
+        <div>
             <sub className='subtitle'>Categoria(s)</sub>
             <hr id='divisor' className='card-divisor my-4' />
             {book.categories.map(category => (
@@ -71,7 +70,7 @@ export default (props) => {
     )
 
     const BookLanguage = () => (
-        <div className='info-area'>
+        <div>
             <sub className='subtitle'>Idioma</sub>
             <hr id='divisor' className='card-divisor my-4' />
             <p className='description'>{book.language}</p>
@@ -79,18 +78,18 @@ export default (props) => {
     )
 
     const BookPreview = () => (
-        <div className='info-area'>
+        <div>
             <sub className='subtitle'>Prévia do Livro</sub>
             <hr id='divisor' className='card-divisor my-4' />
-            <a href={book.preview} target="_blank" className='description'>{book.preview}</a>
+            <a className='description'>{book.preview}</a>
         </div>
     )
 
     const BookInfo = () => (
-        <div className='info-area'>
+        <div>
             <sub className='subtitle'>Informações do Livro</sub>
             <hr id='divisor' className='card-divisor my-4' />
-            <a href={book.info} target="_blank" className='description'>{book.info}</a>
+            <a className='description'>{book.info}</a>
         </div>
     )
 
@@ -106,7 +105,7 @@ export default (props) => {
                     </div>
                     <div className='thumbnailArea col-sm-4'>
                         <Suspense fallback={<Spinner />}>
-                            <BookThumbnail classAttribute='poster' volumeInfo={book.volumeInfo} thumbnail={book.thumbnail} alt='Book thumbnail' />
+                            <BookThumbnail volumeInfo={book.volumeInfo} thumbnail={book.thumbnail} alt='Book thumbnail' />
                         </Suspense>
                     </div>
                     <div className='col-sm-8 synopsisBox'>
@@ -114,32 +113,32 @@ export default (props) => {
                             <BookDescription />
                         </ShowCondition>
                     </div>
-                    <div className='col-sm-6 col-md-6 col-6 col-xs-6'>
+                    <div className='col-sm-6 col-xs-6'>
                         <ShowCondition condition={book.authors}>
                             <BookAuthors />
                         </ShowCondition>
                     </div>
-                    <div className='col-sm-6 col-md-6 col-6 col-xs-6'>
+                    <div className='col-sm-6 col-xs-6'>
                         <ShowCondition condition={book.publisher}>
                             <Publisher />
                         </ShowCondition>
                     </div>
-                    <div className='col-sm-6 col-md-6 col-6 col-xs-6'>
+                    <div className='col-sm-6 col-xs-6'>
                         <ShowCondition condition={book.releaseDate}>
                             <BookRelease />
                         </ShowCondition>
                     </div>
-                    <div className='col-sm-6 col-md-6 col-6 col-xs-6'>
+                    <div className='col-sm-6 col-xs-6'>
                         <ShowCondition condition={book.pageCount}>
                             <PageCount />
                         </ShowCondition>
                     </div>
-                    <div className='col-sm-6 col-md-6 col-6 col-xs-6'>
+                    <div className='col-sm-6 col-xs-6'>
                         <ShowCondition condition={book.categories}>
                             <BookCategories />
                         </ShowCondition>
                     </div>
-                    <div className='col-sm-6 col-md-6 col-6 col-xs-6'>
+                    <div className='col-sm-6 col-xs-6'>
                         <ShowCondition condition={book.language}>
                             <BookLanguage />
                         </ShowCondition>

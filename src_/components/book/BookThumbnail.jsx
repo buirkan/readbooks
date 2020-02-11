@@ -16,7 +16,7 @@ export default (props) => {
   return (
     <Fragment>
       <Suspense fallback={<Spinner />}>
-        <img className={props.classAttribute} src={thumbnail ? thumbnail : UnavailableImage} alt={props.alt} />
+        <img className='poster' src={thumbnail ? thumbnail : UnavailableImage} alt={props.alt} />
       </Suspense>
     </Fragment>
   )

@@ -9,7 +9,7 @@ export default class Pagination extends Component {
   }
 
   componentDidMount() {
-    if (this.props.items && this.props.items > 0) {
+    if (this.props.items) {
       this.setPage(this.initialPage)
     }
   }

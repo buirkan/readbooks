@@ -21,7 +21,7 @@ class Book extends Component {
             startIndex: 0,
             totalVolume: 0,
             totalFavorites: 0,
-            booksPerPage: 18,
+            booksPerPage: 10,
             showCard: false,
             mainListDisplay: true,
         }
@@ -48,7 +48,7 @@ class Book extends Component {
     }
 
     checkQuery(text) {
-        let letterNumberCheck = /.*\S.*/ig
+        let letterNumberCheck = /^[0-9a-zA-Z\s]+$/i
         return text.match(letterNumberCheck) ? `${text.replace(/ /g, '+')}` : ''
     }
 
@@ -83,28 +83,33 @@ class Book extends Component {
     }
 
     handleAddToFavorites(book) {
-        const favorites = this.state.favoritesList.concat(book)
-        this.setState({ favoritesList: favorites, totalFavorites: favorites.length })
+        console.log(`book: ${book}`)
+        let favBooks = this.state.favoritesList
+
+        favBooks.push(book)
+        this.setState({ favoritesList: favbooks, totalFavorites: favBooks.length })
+        //set true specific book as favorite
     }
 
     handleRemoveFromFavorites(book) {
-        const favorites = this.state.favoritesList
-        const index = favorites.indexOf(book)
+        let favBooks = this.state.favoritesList
+        const index = favBooks.indexOf(book)
 
         if (index > -1)
-            favorites.splice(index, 1)
-        else
-            console.error('livro não encontrado!')
+            favbooks.splice(index, 1)
 
-        this.setState({ favoritesList: favorites, totalFavorites: favorites.length })
+        this.setState({ favoritesList: favbooks, totalFavorites: favbooks.length })
+        // set false specific book as favorite
     }
 
     handleSearchBooks() {
-        this.setState({ mainListDisplay: true })
+        if (this.state.mainListDisplay !== true)
+            this.setState({ mainListDisplay: true })
     }
 
     handleSearchFavorites() {
-        this.setState({ mainListDisplay: false })
+        if (this.state.mainListDisplay !== false)
+            this.setState({ mainListDisplay: false })
     }
 
     handleChangePage(pageIndex) {
@@ -113,7 +118,7 @@ class Book extends Component {
 
     render() {
         return (
-            <main className='container-fluid col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2'>
+            <main className='container-fluid col-md-6 col-md-offset-3'>
                 <h1 id='appTitle'>Read Books <span>&#128218;</span></h1>
                 <div className='buttonsHeader'>
                     <CustomButton
@@ -135,24 +140,13 @@ class Book extends Component {
                         callback={this.handleSearchFavorites} />
                 </div>
                 <hr id='divisor' className='my-4'></hr>
-                <BookForm
-                    input={this.state.input} handleUp={this.handleKeyEvent}
-                    handleInputValue={this.handleInput} />
+                <BookForm input={this.state.input} handleUp={this.handleKeyEvent} handleInputValue={this.handleInput} />
                 <ShowCondition condition={this.state.bookList.length > 0}>
                     <Suspense fallback={<Spinner />}>
                         <BookList
-                            mainList={this.state.mainListDisplay}
-                            booksList={this.state.mainListDisplay ? this.state.bookList : this.state.favoritesList}
-                            favoritesList={this.state.favoritesList}
-                            handleShowCard={this.handleShowCard}
-                            markFavorite={(book) => this.handleAddToFavorites(book)}
-                            removeFavorite={(book) => this.handleRemoveFromFavorites(book)} />
-                        <div className='text-center'>
-                            <Pagination
-                                items={this.state.mainListDisplay ? this.state.totalVolume : this.state.totalFavorites}
-                                itemsPerPage={this.state.booksPerPage}
-                                handleChangePage={this.handleChangePage} />
-                        </div>
+                            booksList={this.state.mainListDisplay ? this.state.bookList : this.state.favoritesList} handleShowCard={this.handleShowCard} />
+                        <Pagination items={this.state.totalVolume} itemsPerPage={this.state.booksPerPage}
+                            handleChangePage={this.handleChangePage} />
                     </Suspense>
                 </ShowCondition>
             </main>

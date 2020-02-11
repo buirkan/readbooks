@@ -4,11 +4,10 @@ import BookCard from './BookCard'
 import Spinner from '../template/loader/Spinner'
 import { ShowCondition } from '../Utils'
 
-const BookThumbnail = React.lazy(() => import('./BookThumbnail'))
 class BookItem extends Component {
     constructor(props) {
         super(props)
-        this.state = { showCard: false, isFavorite: false }
+        this.state = { showCard: false }
 
         this.book = {
             title: props.book.volumeInfo.title || '',
@@ -23,16 +22,22 @@ class BookItem extends Component {
             language: props.book.volumeInfo.language || '',
             preview: props.book.volumeInfo.previewLink || '',
             info: props.book.volumeInfo.infoLink || '',
+            isFavorite: false
         }
 
+        this.handleMardAsFav = this.handleMarkAsFav.bind(this)
         this.handleShowCard = this.handleShowCard.bind(this)
         this.handleHideCard = this.handleHideCard.bind(this)
         this.CardContent = this.CardContent.bind(this)
-        this.setBookAsFavorite = this.setBookAsFavorite.bind(this)
+    }
+
+    handleMarkAsFav(e) {
+        console.log(e.target)
     }
 
     handleShowCard(e) {
         if (this.state.showCard == true) {
+            console.log('card display is already true')
             e.preventDefault()
             return
         }
@@ -51,45 +56,24 @@ class BookItem extends Component {
         )
     }
 
-    setBookAsFavorite(book) {
-        if (!this.state.isFavorite) {
-            this.setState({ isFavorite: true })
-            this.props.markFavorite(book)
-        } else {
-            this.setState({ isFavorite: false, isAlreadyFavorite: false })
-            this.props.removeFavorite(book)
-        }
-    }
-
     render() {
         return (
-            <Fragment>
-                <div className='bookItem' onClick={this.handleShowCard} >
-                    <div className="main-thumb-poster">
+            <div>
+                <div className='movie' onClick={this.handleShowCard} >
+                    <h4>{this.book.title}</h4>
+                    <ShowCondition condition={this.state.showCard}>
                         <Suspense fallback={<Spinner />}>
-                            <BookThumbnail classAttribute='poster-list' volumeInfo={this.book.volumeInfo} thumbnail={this.book.thumbnail} alt='Book thumbnail' />
-                            <div className='overlay'>
-                                <div>{this.book.title}</div>
-                            </div>
+                            <BookCard book={this.book} handleClose={this.handleHideCard} />
                         </Suspense>
-                    </div>
+                    </ShowCondition>
                 </div>
-                <ShowCondition condition={this.state.showCard}>
-                    <Suspense fallback={<Spinner />}>
-                        <BookCard book={this.book} handleClose={this.handleHideCard} />
-                    </Suspense>
-                </ShowCondition>
-                <div className='favorite'>
-                    <CustomButton
-                        idButton='fav-button'
-                        favState={this.state.isFavorite ? 'favoriteOn' : 'favoriteOff'}
-                        show={true}
-                        showText={false}
-                        category={this.state.isFavorite || this.state.isAlreadyFavorite ? 'secondary' : 'warning'}
-                        icon='star'
-                        callback={() => this.setBookAsFavorite(this.book)} />
-                </div>
-            </Fragment>
+                <CustomButton
+                    show={true}
+                    showText={false}
+                    category='warning'
+                    icon='star'
+                    callback={this.handleMarkAsFav} />
+            </div>
         )
     }
 }
