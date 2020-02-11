@@ -46,6 +46,8 @@ body {
 
 .info-area {
   text-align: initial;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 @keyframes loading {
