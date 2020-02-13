@@ -6,6 +6,7 @@ import config from '../../config/appconfig'
 import { ShowCondition } from '../Utils'
 import CustomButton from '../template/CustomButton'
 import Pagination from '../pagination/Pagination'
+import { containsObjectById } from '../Utils'
 
 // lazy component
 const BookList = React.lazy(() => import('./BookList'))
@@ -27,7 +28,7 @@ class Book extends Component {
         }
 
         this.handleInput = this.handleInput.bind(this)
-        this.formatQuery = this.checkQuery.bind(this)
+        this.checkQuery = this.checkQuery.bind(this)
         this.getBooksList = this.getBooksList.bind(this)
         this.triggerSearch = this.triggerSearch.bind(this)
         this.handleAddToFavorites = this.handleAddToFavorites.bind(this)
@@ -82,19 +83,36 @@ class Book extends Component {
         this.timer = setTimeout(this.triggerSearch, TRIGGER_INTERVAL)
     }
 
+    setNewFavorite(listFavorites, bookData) {
+        listFavorites = this.state.favoritesList.concat(bookData)
+        this.setState({ favoritesList: listFavorites, totalFavorites: listFavorites.length })
+    }
+
     handleAddToFavorites(book) {
-        const favorites = this.state.favoritesList.concat(book)
-        this.setState({ favoritesList: favorites, totalFavorites: favorites.length })
+        var favorites
+
+        if (this.state.favoritesList.length > 0) {
+            favorites = this.state.favoritesList
+            let indexOnFavorites = containsObjectById(book, favorites)
+
+            // prevent duplicate items
+            if (indexOnFavorites == -1)
+                this.setNewFavorite(favorites, book)
+            else
+                console.log('livro já se encontra nos favoritos!')
+        } else {
+            this.setNewFavorite(favorites, book)
+        }
     }
 
     handleRemoveFromFavorites(book) {
         const favorites = this.state.favoritesList
-        const index = favorites.indexOf(book)
+        const bookIndex = containsObjectById(book, favorites)
 
-        if (index > -1)
-            favorites.splice(index, 1)
+        if (bookIndex != -1)
+            favorites.splice(bookIndex, 1)
         else
-            console.error('livro não encontrado!')
+            console.log('livro não encontrado!')
 
         this.setState({ favoritesList: favorites, totalFavorites: favorites.length })
     }
@@ -138,11 +156,11 @@ class Book extends Component {
                 <BookForm
                     input={this.state.input} handleUp={this.handleKeyEvent}
                     handleInputValue={this.handleInput} />
-                <ShowCondition condition={this.state.bookList.length > 0}>
+                <ShowCondition condition={this.state.bookList.length > 0 || this.state.favoritesList.length > 0}>
                     <Suspense fallback={<Spinner />}>
                         <BookList
                             mainList={this.state.mainListDisplay}
-                            booksList={this.state.mainListDisplay ? this.state.bookList : this.state.favoritesList}
+                            booksList={this.state.bookList}
                             favoritesList={this.state.favoritesList}
                             handleShowCard={this.handleShowCard}
                             markFavorite={(book) => this.handleAddToFavorites(book)}

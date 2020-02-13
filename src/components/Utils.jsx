@@ -15,3 +15,16 @@ export const dateFormatter = (date) => {
 
   return (`0${day}`).slice(-2) + '/' + (`0${month}`).slice(-2) + `/${year}`
 }
+
+export const containsObjectById = (book, favorites) => {
+  var bookFounded, bookIndex
+
+  for (let i = 0; i < favorites.length; i++) {
+      if (favorites[i].id == book.id) {
+          bookFounded = favorites[i]
+          bookIndex = i
+      }
+  }
+
+  return bookFounded ? bookIndex : -1
+}

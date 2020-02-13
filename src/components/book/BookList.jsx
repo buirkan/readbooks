@@ -1,16 +1,21 @@
 import React, { Fragment } from 'react'
+import { containsObjectById } from '../Utils'
 
 const BookItem = React.lazy(() => import('./BookItem'))
 
-export default (props) => {
+const BookList = (props) => {
     const books = props.mainList
         ? (props.booksList || [])
         : (props.favoritesList || [])
-    const favorites = props.favoritesList
+    const favorites = props.favoritesList || []
 
-    const checkFavorite = (item) => {
-        let matches = favorites.filter((favorite) => item.id === favorite.id)
-        return matches === []
+    const checkFavorite = (bookItem) => {
+        var isFavorite = -1
+
+        if (favorites.length > 1)
+            isFavorite = containsObjectById(bookItem, favorites)
+
+        return isFavorite != -1 ? true : false
     }
 
     const renderBooks = () => {
@@ -35,3 +40,5 @@ export default (props) => {
         </Fragment>
     )
 }
+
+export default BookList

@@ -31,6 +31,12 @@ class BookItem extends Component {
         this.setBookAsFavorite = this.setBookAsFavorite.bind(this)
     }
 
+    componentDidMount() {
+        if (this.props.isAlreadyFavorite) {
+            this.setState({ isFavorite: true })
+        }
+    }
+
     handleShowCard(e) {
         if (this.state.showCard == true) {
             e.preventDefault()
@@ -53,10 +59,12 @@ class BookItem extends Component {
 
     setBookAsFavorite(book) {
         if (!this.state.isFavorite) {
+            console.log('setting book as favorite...')
             this.setState({ isFavorite: true })
             this.props.markFavorite(book)
         } else {
-            this.setState({ isFavorite: false, isAlreadyFavorite: false })
+            console.log('removing book from favorites...')
+            this.setState({ isFavorite: false })
             this.props.removeFavorite(book)
         }
     }
@@ -85,9 +93,10 @@ class BookItem extends Component {
                         favState={this.state.isFavorite ? 'favoriteOn' : 'favoriteOff'}
                         show={true}
                         showText={false}
-                        category={this.state.isFavorite || this.state.isAlreadyFavorite ? 'secondary' : 'warning'}
+                        category={this.state.isFavorite ? 'secondary' : 'warning'}
                         icon='star'
-                        callback={() => this.setBookAsFavorite(this.book)} />
+                        callback={() => this.setBookAsFavorite(this.book)}
+                    />
                 </div>
             </Fragment>
         )
