@@ -5,7 +5,7 @@ import { dateFormatter } from '../Utils'
 
 const BookThumbnail = React.lazy(() => import('./BookThumbnail'))
 
-export default (props) => {
+const BookCard = (props) => {
     const book = props.book
 
     const HeaderCard = () => (
@@ -159,3 +159,5 @@ export default (props) => {
         </Fragment>
     )
 }
+
+export default BookCard

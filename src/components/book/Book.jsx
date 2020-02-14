@@ -167,7 +167,9 @@ class Book extends Component {
                             removeFavorite={(book) => this.handleRemoveFromFavorites(book)} />
                         <div className='text-center'>
                             <Pagination
-                                items={this.state.mainListDisplay ? this.state.totalVolume : this.state.totalFavorites}
+                                mainList={this.state.mainListDisplay}
+                                items={this.state.totalVolume}
+                                favorites={this.state.totalFavorites}
                                 itemsPerPage={this.state.booksPerPage}
                                 handleChangePage={this.handleChangePage} />
                         </div>

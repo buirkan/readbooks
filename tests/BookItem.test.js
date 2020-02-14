@@ -5,6 +5,12 @@ import BookItem from '../src/components/book/BookItem'
 
 configure({adapter: new Adapter()})
 
+// const wrapper
+// test it
+// beforeEach(() => {
+//     wrapper = shallow(<BookItem {...props}/>)
+// })
+
 describe('Book Item Component tests', () => {
     const book = {
         title: 'Book for test',

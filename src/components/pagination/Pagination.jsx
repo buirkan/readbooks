@@ -6,22 +6,19 @@ export default class Pagination extends Component {
 
     this.initialPage = 1
     this.state = { paginator: {} }
+    this.items = props.mainList
+      ? (props.items || [])
+      : (props.favorites || [])
   }
 
   componentDidMount() {
-    if (this.props.items && this.props.items > 0) {
+    if (this.items && this.items > 0) {
       this.setPage(this.initialPage)
     }
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.items !== prevProps.items) {
-  //     this.setPage(this.initialPage)
-  //   }
-  // }
-
   setPage(page) {
-    let itemsLength = this.props.items
+    let itemsLength = this.items.length
     let pager = this.state.paginator
 
     if (page < 1 || page > pager.totalPages)
