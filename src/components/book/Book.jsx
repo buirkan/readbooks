@@ -129,6 +129,13 @@ class Book extends Component {
         this.setState({ startIndex: pageIndex }, this.triggerSearch)
     }
 
+    checkDisplay() {
+        if (this.state.mainListDisplay)
+            return this.state.bookList.length > 0
+        else
+            return this.state.favoritesList.length > 0
+    }
+
     render() {
         return (
             <main className='container-fluid col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2'>
@@ -156,7 +163,7 @@ class Book extends Component {
                 <BookForm
                     input={this.state.input} handleUp={this.handleKeyEvent}
                     handleInputValue={this.handleInput} />
-                <ShowCondition condition={this.state.bookList.length > 0 || this.state.favoritesList.length > 0}>
+                <ShowCondition condition={this.checkDisplay()}>
                     <Suspense fallback={<Spinner />}>
                         <BookList
                             mainList={this.state.mainListDisplay}
